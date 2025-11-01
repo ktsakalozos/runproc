@@ -1,0 +1,31 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go coverage and profiles
+*.coverprofile
+coverage.*
+profile.out
+
+# Project build artifacts
+/runproc
+/bin/
+/build/
+/dist/
+
+# Vendored dependencies (if not using)
+/vendor/
+
+# Editor & OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.orig
+.idea/
+.vscode/
