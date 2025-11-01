@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: Build & Integration Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21.x'
+          check-latest: true
+          cache: true
+
+      - name: Verify Go
+        run: go version
+
+      - name: Build
+        run: make build -s
+
+      - name: Run integration tests (no E2E)
+        run: make integration-test -s
+
+  e2e-kind:
+    name: Kind E2E Tests (Linux-only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    needs: build-and-test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21.x'
+          check-latest: true
+          cache: true
+
+      - name: Install kubectl
+        run: |
+          KUBECTL_VERSION=$(curl -L -s https://dl.k8s.io/release/stable.txt)
+          curl -L -o kubectl https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl
+          echo "${KUBECTL_VERSION}" && chmod +x kubectl
+          sudo mv kubectl /usr/local/bin/kubectl
+          kubectl version --client=true
+
+      - name: Build
+        run: make build -s
+
+      - name: Run Kind E2E tests
+        env:
+          RUNPROC_KIND_E2E: '1'
+        run: make integration-test -s

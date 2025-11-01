@@ -1,0 +1,15 @@
+{
+  "ociVersion": "1.1.0",
+  "process": {
+    "terminal": false,
+    "args": ["/bin/sh", "-c", "echo hello from runproc"],
+    "cwd": "/",
+    "env": [
+      "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    ]
+  },
+  "root": {
+    "path": "/",
+    "readonly": false
+  }
+}
