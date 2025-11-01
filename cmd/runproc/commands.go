@@ -13,8 +13,8 @@ import (
 	"syscall"
 	"time"
 
-	"runproc/internal/oci"
-	"runproc/internal/state"
+	"github.com/ktsakalozos/runproc/internal/oci"
+	"github.com/ktsakalozos/runproc/internal/state"
 )
 
 // cmdCreate reads the bundle's config.json, stores state, and forks an init process
